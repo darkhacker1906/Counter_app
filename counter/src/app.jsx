@@ -1,12 +1,12 @@
-import { useState } from 'preact/hooks'
-import './app.css'
+import React from 'react'
+import Homepage from './pages/Homepage'
 
-export function App() {
-
-
+const app = () => {
   return (
-    <>
-    
-    </>
+    <div>
+   <Homepage/>
+    </div>
   )
 }
+
+export default app
