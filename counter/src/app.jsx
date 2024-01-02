@@ -1,12 +1,13 @@
 import React from 'react'
 import Homepage from './pages/Homepage'
+import FormPage from './pages/FormPage'
 
-const app = () => {
+const App = () => {
   return (
     <div>
-   <Homepage/>
+   {/* <Homepage/> */}
+   <FormPage/>
     </div>
   )
 }
-
-export default app
+export default App

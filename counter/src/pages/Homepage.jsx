@@ -1,5 +1,6 @@
 import React,{useState} from 'react'
-import Button from '../components/Button';
+import ButtonBase from '../components/ButtonBase';
+import Box from '@mui/system/Box';
 
 function Homepage() {
     const [count,setCount]=useState(0);
@@ -12,13 +13,13 @@ function Homepage() {
         }
     }
   return (
-    <div>
+    <Box>
       <h1>Counter {count}</h1>
-      <div style="display:flex;">
-      <Button title="increment" handleClick={add_click} />
-      <Button  title="decrement" handleClick={decrease_click} count={count}  />
-      </div>
-    </div>
+      <Box style="display:flex;">
+      <ButtonBase title="increment" handleClick={add_click} />
+      <ButtonBase  title="decrement" handleClick={decrease_click} count={count}  />
+      </Box>
+    </Box>
   )
 }
 
