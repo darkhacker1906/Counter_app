@@ -1,24 +1,24 @@
 import React, { useState } from "react";
-import {Box,TextField,Button,Stack,Typography,Backdrop,CircularProgress,} from "@mui/material";
+import {Box,TextField,Button,Stack,Typography,Backdrop,CircularProgress, InputLabel,} from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Grid from "@mui/material/Grid";
 import TablePage from "./TablePage";
-import { addList, arr } from "./Functions";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import Check from "../components/Check";
+import SelectGender from "../components/SelectGender";
 import SnackBars from "../components/SnackBars";
-
 
 function FormPage() {
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
   const [date, setDate] = useState("");
   const [aboutText, setAboutText] = useState("");
-  const [students, setStudents] = useState([]);
   const [gender, setGender] = useState("");
   const [loading, setLoading] = useState(false);
   const [test , setTest] = useState(false)
+  const [message, setMessage] = useState("")
+  const [rest, setRest]= useState("")
+  const [arr,SetArr]=useState([]);
   const isFormValid = () => {
     if (
       fname.trim() === "" ||
@@ -30,23 +30,32 @@ function FormPage() {
     }
     return true;
   };
+  
+  function addList(fname,lname,aboutText,date,gender){
+        var dataArr={fname,lname,aboutText,date,gender};
+        SetArr([...arr, dataArr]);
+       }
 
   const submit_click = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
     }, 1000);
-  
 
     if (isFormValid()) {
       addList(fname, lname, aboutText, date, gender);
-      setStudents([...arr]);
+      setMessage("Data added successfully")
+      setRest("success");
       setFname("");
       setLname("");
       setDate("");
       setAboutText("");
       setGender("");
       setTest(true)
+    }else{
+      setTest(true)
+      setMessage("all data required")
+      setRest("error")
     }
   };
   const handleChange = (e) => {
@@ -55,17 +64,15 @@ function FormPage() {
   const check_change = (event) => {
     setGender(event.target.value);
   };
+
   return (
     <Box>
-      <Grid container spacing={2} my={4}>
-        <Grid item xs={6}>
-          <Box bgcolor="aliceblue">
+      <Grid container spacing={2} my={4}sx={{p:'2'}}>
+        <Grid item xs={6} >
+          <Box bgcolor="#f0f8ff"p={2}>
             <Stack direction={"row"} spacing={2} sx={{ mb: 2 }}>
               <Box sx={{ width: '50%' }}>
-                <label htmlFor itemID="first">
-                  Enter first name
-                </label>
-                <br />
+                <Typography variant="h6" sx={{ color:"#000000"}}>Enter First Name</Typography>
                 <TextField
                   id="filled-basic"
                   itemID="first"
@@ -79,10 +86,7 @@ function FormPage() {
                 />
               </Box>
               <Box sx={{ width: "48%" }}>
-                <label htmlFor itemID="last" style={"display:inline-block"}>
-                  <Typography variant="h6">Enter Last Name</Typography>
-                </label>
-                <br />
+                  <Typography variant="h6"sx={{ color:"#000000"}}>Enter Last Name</Typography>
                 <TextField
                   id="filled-basic"
                   itemID="last"
@@ -101,11 +105,9 @@ function FormPage() {
                 <DemoContainer
                   components={["DatePicker", "DatePicker", "DatePicker"]}
                 >
-                  <label for id="date_pick">
-                    <Typography variant="h6">Enter Date Of Birth</Typography>
-                  </label>
+                    <Typography variant="h6" sx={{color:"#000000"}}>Enter Date Of Birth</Typography>
                   <DatePicker
-                    sx={{ "&.MuiFormControl-root": { marginTop: "0" } }}
+                    sx={{ "&.MuiFormControl-root": { marginTop: "0" },"&.MuiInputBase-input":{color:"#606366"} }}
                     slotProps={{ textField: { variant: "filled" } }}
                     value={date}
                     onChange={(e) => handleChange(e)}
@@ -114,13 +116,7 @@ function FormPage() {
                 </DemoContainer>
               </LocalizationProvider>
             </Box>
-
-            <label
-              id="outlined-multiline-flexible"
-              style={{ marginTop: "20px" }}
-            >
-              <Typography variant="h6">Enter Comments</Typography>
-            </label>
+              <Typography variant="h6"  sx={{color:"#000000",marginTop: "20px" }}>Enter Comments</Typography>
             <TextField
               id="outlined-multiline-flexible"
               value={aboutText}
@@ -137,25 +133,22 @@ function FormPage() {
                 width: "100%",
               }}
             />
-            <Check handleClick={check_change} gender={gender} />
-            {loading ? (
-              <CircularProgress />
-            ) : (
+            <SelectGender handleClick={check_change} gender={gender} />
               <Button
                 onClick={submit_click}
                 sx={{ mt: 2, width: "100%" }}
                 variant="contained"  >
                 Submit
               </Button>
-            )}
+            
           </Box>
         </Grid>
         <Grid item xs={6}>
-          <Box bgcolor="aliceblue">
-            <TablePage data={students} />
+          <Box bgcolor="#f0f8ff">
+            {loading? <CircularProgress /> :<TablePage  data={arr} />}
           </Box>
         </Grid>
-     <SnackBars test={test} />
+     <SnackBars test={test} setTest={setTest} message={message} rest={rest}/>
       </Grid>
     </Box>
   );

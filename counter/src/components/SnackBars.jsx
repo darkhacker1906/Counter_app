@@ -3,37 +3,34 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import {useEffect} from 'react';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
- function SnackBars({test}) {
-  const [open, setOpen] = React.useState(false);
-
-  const handleClick = () => {
-    setOpen(true);
-    console.log(test, "testttttttttttt");
-  };
-
+ function SnackBars({test,setTest,message,rest}) {
+   
   const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setOpen(false);
+    // setTimeout(()=>{
+    //   setTest(false);
+    // },1000)
+    setTest(false)
   };
+
+// useEffect(() => {
+//   if(test){
+//     handleClose()
+//   }
+// }, [test]);
  
   return (
     <>
-    {
-      test && 
-      <Snackbar open={test} autoHideDuration={1000}>
-           <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-             This is a success message!
+      <Snackbar open={test} autoHideDuration={2000}  onClose={handleClose}>
+           <Alert onClose={handleClose} severity={rest} sx={{ width: '100%' }}>
+            {message} 
            </Alert>
         </Snackbar>
-    }
     </>
   );
 }

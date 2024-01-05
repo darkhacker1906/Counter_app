@@ -4,12 +4,14 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { Typography } from "@mui/material";
 
-function Check({handleClick,gender}) {
+function SelectGender({handleClick,gender}) {
   return (
     <Box sx={{ minWidth: 120 ,mt:2}}>
+      <Typography variant="h6">Gender</Typography>
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+        <InputLabel id="demo-simple-select-label">Select Gender</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
@@ -24,4 +26,4 @@ function Check({handleClick,gender}) {
     </Box>
   );
 }
-export default Check
+export default SelectGender
