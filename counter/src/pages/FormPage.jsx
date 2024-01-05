@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { Box, TextField, Button, Stack } from "@mui/material";
+import {Box,TextField,Button,Stack,Typography,Backdrop,CircularProgress,} from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { TextareaAutosize } from "@mui/base/TextareaAutosize";
 import Grid from "@mui/material/Grid";
 import TablePage from "./TablePage";
 import { addList, arr } from "./Functions";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import Check from "../components/Check";
+import SnackBars from "../components/SnackBars";
+
 
 function FormPage() {
   const [fname, setFname] = useState("");
@@ -13,22 +16,9 @@ function FormPage() {
   const [date, setDate] = useState("");
   const [aboutText, setAboutText] = useState("");
   const [students, setStudents] = useState([]);
-
-  // const submit_click=()=>{
-  //  if( fname.trim() !== "" && lname.trim() !== "" && aboutText.trim() !== "" && date.toLocaleDateString(undefined, options)!=true)
-  //  {
-  //   addList(fname,lname,aboutText,date);
-  //   setStudents([...arr]);
-  //   setFname("");
-  //   setLname("");
-  //   setDate("");
-  //   setAboutText("");
-  //  }
-  //    else{
-  //     alert("You are going wrong");
-  //    }
-  // }
-
+  const [gender, setGender] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [test , setTest] = useState(false)
   const isFormValid = () => {
     if (
       fname.trim() === "" ||
@@ -41,27 +31,38 @@ function FormPage() {
     return true;
   };
 
-  const submit_click = (e) => {
+  const submit_click = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  
+
     if (isFormValid()) {
-      addList(fname, lname, aboutText, date);
+      addList(fname, lname, aboutText, date, gender);
       setStudents([...arr]);
       setFname("");
       setLname("");
       setDate("");
       setAboutText("");
+      setGender("");
+      setTest(true)
     }
   };
   const handleChange = (e) => {
     setDate(e.$d);
+  };
+  const check_change = (event) => {
+    setGender(event.target.value);
   };
   return (
     <Box>
       <Grid container spacing={2} my={4}>
         <Grid item xs={6}>
           <Box bgcolor="aliceblue">
-            <Stack direction={"row"} spacing={2}sx={{mb:2}}>
-              <Box sx={{width:'50%'}}>
-                <label  htmlFor itemID="first">
+            <Stack direction={"row"} spacing={2} sx={{ mb: 2 }}>
+              <Box sx={{ width: '50%' }}>
+                <label htmlFor itemID="first">
                   Enter first name
                 </label>
                 <br />
@@ -74,12 +75,12 @@ function FormPage() {
                   }}
                   label="First Name"
                   variant="filled"
-                  sx={{width:"100%"}}
+                  sx={{ width: "100%" }}
                 />
               </Box>
-              <Box sx={{width:'50%'}}>
-                <label htmlFor itemID="last">
-                  Enter first name
+              <Box sx={{ width: "48%" }}>
+                <label htmlFor itemID="last" style={"display:inline-block"}>
+                  <Typography variant="h6">Enter Last Name</Typography>
                 </label>
                 <br />
                 <TextField
@@ -91,27 +92,35 @@ function FormPage() {
                   }}
                   label="Last Name"
                   variant="filled"
-                  sx={{width:"100%"}}
+                  sx={{ width: "100%" }}
                 />
               </Box>
             </Stack>
-            <Box sx={{width:"100%"}}>
-            <LocalizationProvider 
-              dateAdapter={AdapterDayjs}
-              sx={{ mt: 2 }}
-              value={aboutText}
-            >
-               <label for id="date_pick">Enter date of birth</label>
-              <DatePicker
-                value={date}
-                onChange={(e) => handleChange(e)}
-                id="date_pick"
-                sx={{ display: "block", mb: 2, width: "100%" }}
-              />
-            </LocalizationProvider>
+            <Box sx={{ mb: 2 }}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer
+                  components={["DatePicker", "DatePicker", "DatePicker"]}
+                >
+                  <label for id="date_pick">
+                    <Typography variant="h6">Enter Date Of Birth</Typography>
+                  </label>
+                  <DatePicker
+                    sx={{ "&.MuiFormControl-root": { marginTop: "0" } }}
+                    slotProps={{ textField: { variant: "filled" } }}
+                    value={date}
+                    onChange={(e) => handleChange(e)}
+                    id="date_pick"
+                  />
+                </DemoContainer>
+              </LocalizationProvider>
             </Box>
-            
-            <label id="outlined-multiline-flexible">Enter comments</label>
+
+            <label
+              id="outlined-multiline-flexible"
+              style={{ marginTop: "20px" }}
+            >
+              <Typography variant="h6">Enter Comments</Typography>
+            </label>
             <TextField
               id="outlined-multiline-flexible"
               value={aboutText}
@@ -121,12 +130,24 @@ function FormPage() {
               }}
               multiline
               minRows={4}
-              sx={{ "&.MuiInputBase-Root": "100%", display: "block", mb: 2 }}
-              dis
+              size="medium"
+              sx={{
+                "& > :not(style)": { width: "100%" },
+                display: "block",
+                width: "100%",
+              }}
             />
-            <Button onClick={submit_click} sx={{ mb: 2 }} variant="contained">
-              Submit
-            </Button>
+            <Check handleClick={check_change} gender={gender} />
+            {loading ? (
+              <CircularProgress />
+            ) : (
+              <Button
+                onClick={submit_click}
+                sx={{ mt: 2, width: "100%" }}
+                variant="contained"  >
+                Submit
+              </Button>
+            )}
           </Box>
         </Grid>
         <Grid item xs={6}>
@@ -134,6 +155,7 @@ function FormPage() {
             <TablePage data={students} />
           </Box>
         </Grid>
+     <SnackBars test={test} />
       </Grid>
     </Box>
   );
