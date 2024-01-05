@@ -1,12 +1,12 @@
-import { useState } from 'preact/hooks'
-import './app.css'
+import React from 'react'
+import FormPage from './pages/FormPage'
 
-export function App() {
-
-
+function App() {
   return (
-    <>
-    
-    </>
+    <div>
+   <FormPage/>
+    </div>
   )
 }
+
+export default App

@@ -9,7 +9,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "preact": "^10.19.3"
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@material-ui/lab": "^4.0.0-alpha.61",
+    "@mui/material": "^5.15.2",
+    "@mui/styled-engine-sc": "^6.0.0-alpha.10",
+    "@mui/x-date-pickers": "^6.18.6",
+    "dayjs": "^1.11.10",
+    "preact": "^10.19.3",
+    "styled-components": "^6.1.6"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.7.0",
